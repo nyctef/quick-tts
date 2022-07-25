@@ -16,14 +16,13 @@ public static class Program
         rootCommand.AddCommand(testCommand);
 
         var listCommand = new Command("list", "list out available voices");
-        listCommand.SetHandler(() =>
+        listCommand.SetHandler(async () =>
         {
-            // var voices = new SpeechSynthesizer().GetInstalledVoices().Where(x => x.Enabled);
-            // Console.WriteLine("Available voices:");
-            // foreach (var voice in voices)
-            // {
-            //     Console.WriteLine($"  {voice.VoiceInfo.Name}: {voice.VoiceInfo.Description}");
-            // }
+            var voices = await SpeechWrapper.Create("en-US-JennyNeural").GetAvailableVoices();
+            foreach (var voice in voices)
+            {
+                Console.WriteLine(voice);
+            }
         });
         rootCommand.AddCommand(listCommand);
 

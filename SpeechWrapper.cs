@@ -34,4 +34,13 @@ internal class SpeechWrapper
             throw new Exception(speechSynthesisResult.Reason.ToString());
         }
     }
+
+    public async Task<string[]> GetAvailableVoices()
+    {
+        using var speechSynthesizer = new SpeechSynthesizer(_speechConfig);
+
+        using var voicesResult = await speechSynthesizer.GetVoicesAsync();
+
+        return voicesResult.Voices.Select(x => x.ShortName).ToArray();
+    }
 }

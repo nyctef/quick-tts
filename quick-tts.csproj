@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="microsoft.cognitiveservices.speech" Version="1.22.0" />
     <PackageReference Include="system.commandline" Version="2.0.0-beta4.22272.1" />
-    <PackageReference Include="system.speech" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

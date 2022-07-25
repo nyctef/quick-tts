@@ -9,12 +9,13 @@ internal class SpeechWrapper
         _speechConfig = speechConfig;
     }
 
-    public static SpeechWrapper Create()
+    public static SpeechWrapper Create(string voice)
     {
         try
         {
             var apiKey = File.ReadAllText("api-key.txt");
             var speechConfig = SpeechConfig.FromSubscription(apiKey, "uksouth");
+            speechConfig.SpeechSynthesisVoiceName = voice;
             return new SpeechWrapper(speechConfig);
         }
         catch (Exception e)

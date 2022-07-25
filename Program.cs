@@ -11,7 +11,7 @@ public static class Program
         var testCommand = new Command("test", "read out a test message");
         testCommand.SetHandler(async () =>
         {
-            await SpeechWrapper.Create().Say("This example demonstrates a basic use of Speech Synthesizer");
+            await SpeechWrapper.Create("en-US-JennyNeural").Say("This example demonstrates a basic use of Speech Synthesizer");
         });
         rootCommand.AddCommand(testCommand);
 
@@ -32,7 +32,7 @@ public static class Program
         sayCommand.AddArgument(textArgument);
         sayCommand.SetHandler(async (string text) =>
         {
-            await SpeechWrapper.Create().Say(text);
+            await SpeechWrapper.Create("ja-JP-NanamiNeural").Say(text);
             
         }, textArgument);
         rootCommand.AddCommand(sayCommand);

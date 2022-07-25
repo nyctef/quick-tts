@@ -1,0 +1,4 @@
+[*.cs]
+# we check for windows at the top of the app - this just suppresses the warning
+# in lambdas and other functions where C#'s flow analysis is insufficient
+dotnet_diagnostic.CA1416.severity = none

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>azure tts browser test</title>
+  <meta charset="utf-8" />
+</head>
+<body style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13px;">
+  <div id="warning">
+    Loading ... if this message persists, the Speech Recognition Speech SDK may have failed to load (microsoft.cognitiveservices.speech.sdk.bundle.js missing)
+  </div>
+  
+  <div id="content" style="display:none">
+    <table width="100%">
+      <tr>
+        <td align="right" valign="top">Input Text</td>
+        <td><textarea id="phraseDiv" style="display: inline-block;width:500px;height:50px"></textarea></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button id="startSpeakTextAsyncButton">Run TTS</button></td>
+      </tr>
+      <tr>
+        <td align="right" valign="top">Result</td>
+        <td><textarea id="resultDiv" style="display: inline-block;width:500px;height:100px"></textarea></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Speech SDK reference sdk. -->
+  <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+
+  <!-- Speech SDK USAGE -->
+  <script>
+    var SpeechSDK;
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const startSpeakTextAsyncButton = document.getElementById("startSpeakTextAsyncButton");
+      const subscriptionKey = "SUBSCRIPTION KEY GOES HERE";
+      const serviceRegion = "uksouth";
+      const phraseDiv = document.getElementById("phraseDiv");
+      const resultDiv = document.getElementById("resultDiv");
+
+      startSpeakTextAsyncButton.addEventListener("click", function () {
+        startSpeakTextAsyncButton.disabled = true;
+
+        const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
+        speechConfig.speechSynthesisVoiceName = "ja-JP-NanamiNeural";
+
+        const synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
+
+        let inputText = phraseDiv.value;
+        synthesizer.speakTextAsync(
+          inputText,
+          function (result) {
+            startSpeakTextAsyncButton.disabled = false;
+            if (result.reason === SpeechSDK.ResultReason.Canceled) {
+              resultDiv.innerHTML += "synthesis failed. Error detail: " + result.errorDetails + "\n";
+            }
+            synthesizer.close();
+          },
+          function (err) {
+            startSpeakTextAsyncButton.disabled = false;
+            resultDiv.innerHTML += "Error: ";
+            resultDiv.innerHTML += err;
+            resultDiv.innerHTML += "\n";
+            window.console.log(err);
+
+            synthesizer.close();
+        });
+      });
+
+      if (!!window.SpeechSDK) {
+        SpeechSDK = window.SpeechSDK;
+        startSpeakTextAsyncButton.disabled = false;
+
+        document.getElementById('content').style.display = 'block';
+        document.getElementById('warning').style.display = 'none';
+
+        // in case we have a function for getting an authorization token, call it.
+        if (typeof RequestAuthorizationToken === "function") {
+            RequestAuthorizationToken();
+        }
+      }
+    });
+  
+  </script>
+</body>
+</html>
